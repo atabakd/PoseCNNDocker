@@ -4,76 +4,76 @@ MAINTAINER Atabak Dehban <adehban@isr.tecnico.ulisboa.pt>
 
 
 RUN apt-get update && apt-get install -y \
-        build-essential \
-        cmake \
-        curl \
-        git \
-        libcurl3-dev \
-        libfreetype6-dev \
-        libhdf5-serial-dev \
-        libpng12-dev \
-        libzmq3-dev \
-        pkg-config \
-        python-dev \
-        rsync \
-        tmux \
-        software-properties-common \
-        unzip \
-        zip \
-        zlib1g-dev \
-        wget \
-        python-tk \
-        g++-4.8 \
-        gcc-4.8 \
-        python-numpy \
-        vim \
-        && \
-	    rm -rf /var/lib/apt/lists/*
-    
+    build-essential \
+    cmake \
+    curl \
+    git \
+    libcurl3-dev \
+    libfreetype6-dev \
+    libhdf5-serial-dev \
+    libpng12-dev \
+    libzmq3-dev \
+    pkg-config \
+    python-dev \
+    rsync \
+    tmux \
+    software-properties-common \
+    unzip \
+    zip \
+    zlib1g-dev \
+    wget \
+    python-tk \
+    g++-4.8 \
+    gcc-4.8 \
+    python-numpy \
+    vim \
+    && \
+    rm -rf /var/lib/apt/lists/*
+
 RUN rm /usr/bin/g++ && \ 
-	rm /usr/bin/gcc && \
-	ln -s /usr/bin/g++-4.8 /usr/bin/g++ && \
-	ln -s /usr/bin/gcc-4.8  /usr/bin/gcc
+    rm /usr/bin/gcc && \
+    ln -s /usr/bin/g++-4.8 /usr/bin/g++ && \
+    ln -s /usr/bin/gcc-4.8  /usr/bin/gcc
 
 # Eigen
 RUN git clone --branch=3.3.0 https://github.com/eigenteam/eigen-git-mirror.git && \
-	cd eigen-git-mirror && \
-	mkdir build && \
-	cd build && \
-	cmake .. && \
-	make && \
-	make install
-	
+    cd eigen-git-mirror && \
+    mkdir build && \
+    cd build && \
+    cmake .. && \
+    make && \
+    make install
+
 WORKDIR /
 
-RUN curl -fSsL -O https://bootstrap.pypa.io/get-pip.py && \
+RUN curl -fSsL -O https://bootstrap.pypa.io/pip/2.7/get-pip.py && \
     python get-pip.py && \
     rm get-pip.py
-	
+
 RUN pip --no-cache-dir install \
-        Pillow \
-        matplotlib \
-        numpy \
-        cython \
-        easydict \
-        scipy \
-        enum34 \
-        transforms3d \
-        pyyaml \
-        pillow
-	
+    Pillow \
+    matplotlib \
+    numpy \
+    cython \
+    easydict \
+    scipy \
+    enum34 \
+    transforms3d \
+    pyyaml \
+    pillow
+
 # opencv	
 RUN git clone --branch=3.4.1 https://github.com/opencv/opencv.git && \
-	cd opencv && \
-	mkdir build && \
-	cd build && \
-	cmake -DBUILD_TIFF=ON -DBUILD_opencv_java=OFF -DWITH_CUDA=ON -DENABLE_AVX=ON -DWITH_OPENGL=OFF \
-	-DWITH_OPENCL=ON -DWITH_TBB=ON -DWITH_EIGEN=ON -DWITH_V4L=ON -DWITH_VTK=OFF -DWITH_FFMPEG=OFF \
-	-DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=OFF -DCMAKE_BUILD_TYPE=RELEASE -DINSTALL_PYTHON_EXAMPLES=ON \
-	-DWITH_IPP=OFF -DWITH_ITT=OFF -DCUDA_ARCH_BIN=6.1 .. && \
-	make -j && \
-	make install && \
-	ldconfig
+    cd opencv && \
+    mkdir build && \
+    cd build && \
+    cmake -DBUILD_TIFF=ON -DBUILD_opencv_java=OFF -DWITH_CUDA=ON -DENABLE_AVX=ON -DWITH_OPENGL=OFF \
+    -DWITH_OPENCL=ON -DWITH_TBB=ON -DWITH_EIGEN=ON -DWITH_V4L=ON -DWITH_VTK=OFF -DWITH_FFMPEG=OFF \
+    -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=OFF -DCMAKE_BUILD_TYPE=RELEASE -DINSTALL_PYTHON_EXAMPLES=ON \
+    -DWITH_IPP=OFF -DWITH_ITT=OFF -DCUDA_ARCH_BIN=6.1 .. && \
+    make -j && \
+    make install && \
+    ldconfig
 
 WORKDIR /
 
@@ -112,15 +112,15 @@ ENV TF_CUDA_VERSION=9.0
 ENV TF_CUDNN_VERSION=7
 
 RUN pip --no-cache-dir install \
-        h5py \
-        ipykernel \
-        keras_applications \
-        keras_preprocessing \
-        mock \
-        scipy \
-        sklearn \
-        pandas \
-        && \
+    h5py \
+    ipykernel \
+    keras_applications \
+    keras_preprocessing \
+    mock \
+    scipy \
+    sklearn \
+    pandas \
+    && \
     python -m ipykernel.kernelspec
 
 
@@ -131,7 +131,7 @@ RUN ln -s /usr/local/cuda/lib64/stubs/libcuda.so /usr/local/cuda/lib64/stubs/lib
     tensorflow/tools/pip_package:build_pip_package && \
     rm /usr/local/cuda/lib64/stubs/libcuda.so.1 && \
     bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/pip && \
-	pip --no-cache-dir install --upgrade /tmp/pip/tensorflow-*.whl && \
+    pip --no-cache-dir install --upgrade /tmp/pip/tensorflow-*.whl && \
     rm -rf /tmp/pip && \
     rm -rf /.cache
 # Clean up pip wheel and Bazel cache when done.
@@ -139,12 +139,12 @@ WORKDIR /
 
 # Install nlopt
 RUN git clone https://github.com/stevengj/nlopt.git && \ 
-	cd nlopt && \
-	git checkout 74e647b667f7c4500cdb4f37653e59c29deb9ee2 && \
-	mkdir build && \
-	cd build && \
-	cmake .. && \
-	make install
+    cd nlopt && \
+    git checkout 74e647b667f7c4500cdb4f37653e59c29deb9ee2 && \
+    mkdir build && \
+    cd build && \
+    cmake .. && \
+    make install
 
 WORKDIR /
 
@@ -155,18 +155,18 @@ RUN	git clone https://github.com/atabakd/PoseCNN.git
 
 # download VGG-16.npy
 RUN curl -c /tmp/cookie.txt -s -L "https://drive.google.com/uc?export=download&id=1UdmOKrr9t4IetMubX-y-Pcn7AVaWJ2bL" |grep confirm |  sed -e\
- "s/^.*confirm=\(.*\)&amp;id=.*$/\1/" | xargs -I{} curl -b /tmp/cookie.txt  -L -o vgg16.npy "https://drive.google.com/uc?confirm={}&export=d\
-ownload&id=1UdmOKrr9t4IetMubX-y-Pcn7AVaWJ2bL"
+    "s/^.*confirm=\(.*\)&amp;id=.*$/\1/" | xargs -I{} curl -b /tmp/cookie.txt  -L -o vgg16.npy "https://drive.google.com/uc?confirm={}&export=d\
+    ownload&id=1UdmOKrr9t4IetMubX-y-Pcn7AVaWJ2bL"
 
 RUN mv vgg16.npy /PoseCNN/data/imagenet_models/
 
 # dwonload model
 RUN curl -c /tmp/cookie.txt -s -L "https://drive.google.com/uc?export=download&id=1UNJ56Za6--bHGgD3lbteZtXLC2E-liWz" |grep confirm |  sed -e\
- "s/^.*confirm=\(.*\)&amp;id=.*$/\1/" | xargs -I{} curl -b /tmp/cookie.txt  -L -o demo_models.zip "https://drive.google.com/uc?confirm={}&ex\
-port=download&id=1UNJ56Za6--bHGgD3lbteZtXLC2E-liWz"
+    "s/^.*confirm=\(.*\)&amp;id=.*$/\1/" | xargs -I{} curl -b /tmp/cookie.txt  -L -o demo_models.zip "https://drive.google.com/uc?confirm={}&ex\
+    port=download&id=1UNJ56Za6--bHGgD3lbteZtXLC2E-liWz"
 RUN mv demo_models.zip /PoseCNN/data/demo_models && \
-	unzip /PoseCNN/data/demo_models/demo_models.zip -d /PoseCNN/data/demo_models/ && \
-	rm /PoseCNN/data/demo_models/demo_models.zip
+    unzip /PoseCNN/data/demo_models/demo_models.zip -d /PoseCNN/data/demo_models/ && \
+    rm /PoseCNN/data/demo_models/demo_models.zip
 
 RUN mkdir /PoseCNN/data/LOV/data
 
@@ -180,12 +180,12 @@ RUN ln -s /usr/local/cuda/lib64/stubs/libcuda.so /usr/local/cuda/lib64/stubs/lib
 # from https://github.com/Kaju-Bubanja/PoseCNN
 
 RUN rm /usr/bin/g++ && \
-	ln -s /usr/bin/g++-5* /usr/bin/g++ && \
-	sed -i '64s/^/\/\//' /usr/local/cuda/include/crt/common_functions.h && \
-	python setup.py build_ext --inplace && \
-	sed -i '64s/^\/\///' /usr/local/cuda/include/crt/common_functions.h && \
-	rm /usr/bin/g++ && \
-	ln -s /usr/bin/g++-4.8 /usr/bin/g++
+    ln -s /usr/bin/g++-5* /usr/bin/g++ && \
+    sed -i '64s/^/\/\//' /usr/local/cuda/include/crt/common_functions.h && \
+    python setup.py build_ext --inplace && \
+    sed -i '64s/^\/\///' /usr/local/cuda/include/crt/common_functions.h && \
+    rm /usr/bin/g++ && \
+    ln -s /usr/bin/g++-4.8 /usr/bin/g++
 
 
 ENV PYTHONPATH /PoseCNN/lib:$PYTHONPATH
